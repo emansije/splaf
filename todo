@@ -1,0 +1,6 @@
+Implement addEventListener with jQuery | id:198c5890a8c7b8d3ec69fc4f52485bc29d937b98
+Verify if source code was modified and warn user on actions that will discard those modifications | id:3bcb598ee0495084dd3881c550fee2e9099637d1
+Flowchart editing infrastructure | id:4fd44559f6ef158c5652620ef58259427335578a
+Structured language automatic writing from the flowchart editing actions | id:70c70f55ad67c1d3b305d21c30da459b18fa509a
+Add arrows to connection lines | id:a21b2d395b3a9f155805347576f4974559618312
+jQuerify the saveFile function in splaf.js | id:f0ae11338c032544edcfa32768321498262c7328

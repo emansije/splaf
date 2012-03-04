@@ -1,0 +1,156 @@
+// Adapted from <divergent>coder's toy language grammar
+// http://divergentcoder.com/javascript/playing-with-peg-js/
+
+start 
+  = statement*
+
+statement 
+  = _ lb stmt:(attribution / if / while / print / prompt) _ lb { 
+      return stmt; 
+    }
+
+attribution
+  = id:identifiername ws* "=" ws* val:expr { 
+      return { 
+        type: "attribution", 
+        name: id, 
+        value: val 
+      } 
+    }
+
+functionname
+  = "diz"
+  / "enquanto"
+  / "pede"
+  / "se"
+
+reserved
+  = functionname
+  / "começa"
+  / "então"
+  / "termina"
+
+identifiername
+  = !reserved
+    first:[a-zA-Z_áàãâéíóõôúçÁÀÃÂÉÍÓÕÔÚÇ]
+    rest:[0-9a-zA-Z_áàãâéíóõôúçÁÀÃÂÉÍÓÕÔÚÇ]* {
+      return first + rest.join("")
+    }
+
+expr
+  = binaryop / unaryop
+
+unaryop
+  = op:[!~] operand:(unaryop / expr) {
+      return { 
+        type: "unaryop", 
+        operator: op, 
+        arg: operand 
+      }
+    }
+  / primary
+
+oper = [+-/\*^%<>]
+
+binaryop
+  = left:(primary / unaryop) ws* op:oper ws* right:expr {
+      return {
+        type: "binaryop",
+        operator: op,
+        args: [left, right]
+      }
+    }
+
+primary
+  = (identifier / literal / parentesis)
+
+identifier 
+  = id:identifiername { 
+      return {
+        type: "variable", 
+        name:id
+      }
+    }
+
+literal 
+  = val:(real / integer / text) {
+      return {
+        type: "literal",
+        value: val
+      }
+    }
+
+integer
+  = digits:[0-9]+ { 
+      return parseInt(digits.join("")); 
+    }
+
+real
+  = digits:(integer "." integer) { 
+      return parseFloat(digits.join("")); 
+    }
+
+text
+  = '"' str:([^\"]*) '"' {
+      return str.join("")
+    }
+
+parentesis
+  = "(" val:expr ")" {
+      return val
+    }
+
+block
+  = _ "começa" _ lb stmts:statement* _ lb "termina" {
+      return {
+        type: "block",
+        code: stmts
+      }
+    }
+
+if
+  = "se" ws+ cond:expr ws+ "então" _ lb
+    _ ifval:(statement / block) _ lb
+    _ elseval:("senão" _ lb (statement / block))? _ lb {
+      return {
+        type: "if",
+        condition: cond,
+        value: ifval,
+        elsevalue: elseval ? elseval[3] : null
+      }
+    }
+
+while
+  = "enquanto" ws+ cond:expr _ lb
+    _ whileval:(statement / block) _ lb {
+      return {
+        type: "while",
+        condition: cond,
+        value: whileval
+      }
+    }
+
+prompt
+  = "pede" ws+ id:identifiername _ lb {
+      return {
+        type: "prompt",
+        name: id
+      }
+    }
+
+print
+  = "diz" ws+ args:((ws? expr)+)? _ lb {
+      return {
+        type: "print",
+        arguments: args ? args.map(function(a) { return a[1] }) : null
+      }
+    }
+
+ws 
+  = [ \t]
+
+lb 
+  = [\r\n]*
+
+_ 
+  = ws*
