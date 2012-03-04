@@ -1,0 +1,11 @@
+x = 1
+enquanto x < 11
+  começa
+    y = 1
+    enquanto y < 11
+      começa
+        diz x " × " y " = " x * y
+        y = y + 1
+      termina
+    x = x + 1
+  termina
