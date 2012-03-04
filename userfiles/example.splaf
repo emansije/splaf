@@ -1,0 +1,10 @@
+diz "Qual a sua idade?"
+pede idade
+se idade < 18 então
+  começa
+    diz "É menor de idade."
+    restantes = 18 - idade
+    diz "Faltam " restantes " anos para a maioridade."
+  termina
+senão
+  diz "É maior de idade."
