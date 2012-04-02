@@ -71,7 +71,7 @@ class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 self.wfile.write('File %s correctly stored on the server.' %
                     filename)
             return
-        elif data.path.endswith(('.html', '.js', '.css')):
+        elif data.path.endswith(('.html', '.js', '.css', '.ico')):
             #serve files by following self.path from current working directory
             SimpleHTTPServer.SimpleHTTPRequestHandler.do_GET(self)
             return
