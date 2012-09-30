@@ -1,3 +1,4 @@
 When using a variable that does not exist yet, it should create it on the fly | id:4abd4def44e6c03cc7e38ebaee40140d6c5b778f
 The jQuery implementation is broken | id:769814050e23e5e0b65357235d42f380a38e12a9
 Shapes don't move when we drag them, although the css animation works | id:770633b4d8003ecd8686b0060cd3a737299bd328
+Some characters aren't being accepted in identifier names (ê, Ê) | id:a498cb74cedc36bddae1f3ec04df8500eed408d4

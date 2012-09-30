@@ -10,7 +10,7 @@ statement
     }
 
 attribution
-  = id:identifiername ws* "=" ws* val:expr { 
+  = id:identifiername _ "=" _ val:expr { 
       return { 
         type: "attribution", 
         name: id, 
@@ -32,8 +32,8 @@ reserved
 
 identifiername
   = !reserved
-    first:[a-zA-Z_áàãâéíóõôúçÁÀÃÂÉÍÓÕÔÚÇ]
-    rest:[0-9a-zA-Z_áàãâéíóõôúçÁÀÃÂÉÍÓÕÔÚÇ]* {
+    first:[a-zA-Z_áàãâéêíóõôúçÁÀÃÂÉÊÍÓÕÔÚÇ]
+    rest:[0-9a-zA-Z_áàãâéêíóõôúçÁÀÃÂÉÊÍÓÕÔÚÇ]* {
       return first + rest.join("")
     }
 

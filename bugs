@@ -1,3 +1,2 @@
 Arithmetic engine doesn't always respect operator priority | id:9cb7df7a52e1cb32d57c2f36634d5eb6136bdd42
-Some characters aren't being accepted in identifier names (ê, Ê) | id:a498cb74cedc36bddae1f3ec04df8500eed408d4
 Manual input and terminal output are both wrongly represented as I/O | id:cce960fd58f8dfaad165942bc8ecb416c0bfdd9c
