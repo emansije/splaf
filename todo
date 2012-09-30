@@ -1,4 +1,5 @@
 Implement addEventListener with jQuery | id:198c5890a8c7b8d3ec69fc4f52485bc29d937b98
+Add >=, <=, ==, logical AND, OR and NOT to the grammar | id:274f8bc44e3e6ee7b161d4b522dee61149449e83
 Verify if source code was modified and warn user on actions that will discard those modifications | id:3bcb598ee0495084dd3881c550fee2e9099637d1
 Flowchart editing infrastructure | id:4fd44559f6ef158c5652620ef58259427335578a
 Structured language automatic writing from the flowchart editing actions | id:70c70f55ad67c1d3b305d21c30da459b18fa509a
