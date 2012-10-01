@@ -41,7 +41,7 @@ identifiername "identificador"
     }
 
 MultiplicativeExpression
-  = head:(literal / identifier)
+  = head:primary
     tail:(_ MultiplicativeOperator _ (literal / identifier))* {
       var result = head;
       for (var i = 0; i < tail.length; i++) {
