@@ -51,8 +51,9 @@ Splaf.Parser = (function(){
         "MultiplicativeOperator": parse_MultiplicativeOperator,
         "AdditiveExpression": parse_AdditiveExpression,
         "AdditiveOperator": parse_AdditiveOperator,
+        "ComparisonExpression": parse_ComparisonExpression,
+        "ComparisonOperator": parse_ComparisonOperator,
         "UnitaryExpression": parse_UnitaryExpression,
-        "oper": parse_oper,
         "primary": parse_primary,
         "identifier": parse_identifier,
         "literal": parse_literal,
@@ -756,6 +757,245 @@ Splaf.Parser = (function(){
         return result0;
       }
       
+      function parse_ComparisonExpression() {
+        var result0, result1, result2, result3, result4, result5;
+        var pos0, pos1, pos2;
+        
+        reportFailures++;
+        pos0 = pos;
+        pos1 = pos;
+        result0 = parse_AdditiveExpression();
+        if (result0 !== null) {
+          result1 = [];
+          pos2 = pos;
+          result2 = parse__();
+          if (result2 !== null) {
+            result3 = parse_ComparisonOperator();
+            if (result3 !== null) {
+              result4 = parse__();
+              if (result4 !== null) {
+                result5 = parse_AdditiveExpression();
+                if (result5 !== null) {
+                  result2 = [result2, result3, result4, result5];
+                } else {
+                  result2 = null;
+                  pos = pos2;
+                }
+              } else {
+                result2 = null;
+                pos = pos2;
+              }
+            } else {
+              result2 = null;
+              pos = pos2;
+            }
+          } else {
+            result2 = null;
+            pos = pos2;
+          }
+          while (result2 !== null) {
+            result1.push(result2);
+            pos2 = pos;
+            result2 = parse__();
+            if (result2 !== null) {
+              result3 = parse_ComparisonOperator();
+              if (result3 !== null) {
+                result4 = parse__();
+                if (result4 !== null) {
+                  result5 = parse_AdditiveExpression();
+                  if (result5 !== null) {
+                    result2 = [result2, result3, result4, result5];
+                  } else {
+                    result2 = null;
+                    pos = pos2;
+                  }
+                } else {
+                  result2 = null;
+                  pos = pos2;
+                }
+              } else {
+                result2 = null;
+                pos = pos2;
+              }
+            } else {
+              result2 = null;
+              pos = pos2;
+            }
+          }
+          if (result1 !== null) {
+            result0 = [result0, result1];
+          } else {
+            result0 = null;
+            pos = pos1;
+          }
+        } else {
+          result0 = null;
+          pos = pos1;
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, head, tail) {
+              var result = head;
+              for (var i = 0; i < tail.length; i++) {
+                result = {
+                  type:     "binaryop",
+                  operator: tail[i][1],
+                  args:     [result, tail[i][3]]
+                };
+              }
+              return result;
+            })(pos0, result0[0], result0[1]);
+        }
+        if (result0 === null) {
+          pos = pos0;
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("express\xE3o comparativa");
+        }
+        return result0;
+      }
+      
+      function parse_ComparisonOperator() {
+        var result0;
+        
+        reportFailures++;
+        if (input.substr(pos, 2) === ">=") {
+          result0 = ">=";
+          pos += 2;
+        } else {
+          result0 = null;
+          if (reportFailures === 0) {
+            matchFailed("\">=\"");
+          }
+        }
+        if (result0 === null) {
+          if (input.charCodeAt(pos) === 62) {
+            result0 = ">";
+            pos++;
+          } else {
+            result0 = null;
+            if (reportFailures === 0) {
+              matchFailed("\">\"");
+            }
+          }
+          if (result0 === null) {
+            if (input.substr(pos, 2) === "<=") {
+              result0 = "<=";
+              pos += 2;
+            } else {
+              result0 = null;
+              if (reportFailures === 0) {
+                matchFailed("\"<=\"");
+              }
+            }
+            if (result0 === null) {
+              if (input.charCodeAt(pos) === 60) {
+                result0 = "<";
+                pos++;
+              } else {
+                result0 = null;
+                if (reportFailures === 0) {
+                  matchFailed("\"<\"");
+                }
+              }
+              if (result0 === null) {
+                if (input.substr(pos, 2) === "==") {
+                  result0 = "==";
+                  pos += 2;
+                } else {
+                  result0 = null;
+                  if (reportFailures === 0) {
+                    matchFailed("\"==\"");
+                  }
+                }
+                if (result0 === null) {
+                  if (input.substr(pos, 7) === "igual a") {
+                    result0 = "igual a";
+                    pos += 7;
+                  } else {
+                    result0 = null;
+                    if (reportFailures === 0) {
+                      matchFailed("\"igual a\"");
+                    }
+                  }
+                  if (result0 === null) {
+                    if (input.substr(pos, 9) === "\xE9 igual a") {
+                      result0 = "\xE9 igual a";
+                      pos += 9;
+                    } else {
+                      result0 = null;
+                      if (reportFailures === 0) {
+                        matchFailed("\"\\xE9 igual a\"");
+                      }
+                    }
+                    if (result0 === null) {
+                      if (input.substr(pos, 11) === "for igual a") {
+                        result0 = "for igual a";
+                        pos += 11;
+                      } else {
+                        result0 = null;
+                        if (reportFailures === 0) {
+                          matchFailed("\"for igual a\"");
+                        }
+                      }
+                      if (result0 === null) {
+                        if (input.substr(pos, 2) === "!=") {
+                          result0 = "!=";
+                          pos += 2;
+                        } else {
+                          result0 = null;
+                          if (reportFailures === 0) {
+                            matchFailed("\"!=\"");
+                          }
+                        }
+                        if (result0 === null) {
+                          if (input.substr(pos, 12) === "diferente de") {
+                            result0 = "diferente de";
+                            pos += 12;
+                          } else {
+                            result0 = null;
+                            if (reportFailures === 0) {
+                              matchFailed("\"diferente de\"");
+                            }
+                          }
+                          if (result0 === null) {
+                            if (input.substr(pos, 14) === "\xE9 diferente de") {
+                              result0 = "\xE9 diferente de";
+                              pos += 14;
+                            } else {
+                              result0 = null;
+                              if (reportFailures === 0) {
+                                matchFailed("\"\\xE9 diferente de\"");
+                              }
+                            }
+                            if (result0 === null) {
+                              if (input.substr(pos, 16) === "for diferente de") {
+                                result0 = "for diferente de";
+                                pos += 16;
+                              } else {
+                                result0 = null;
+                                if (reportFailures === 0) {
+                                  matchFailed("\"for diferente de\"");
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("operador de compara\xE7\xE3o");
+        }
+        return result0;
+      }
+      
       function parse_UnitaryExpression() {
         var result0, result1, result2;
         var pos0, pos1;
@@ -788,7 +1028,7 @@ Splaf.Parser = (function(){
           if (result1 !== null) {
             result2 = parse_UnitaryExpression();
             if (result2 === null) {
-              result2 = parse_AdditiveExpression();
+              result2 = parse_ComparisonExpression();
             }
             if (result2 !== null) {
               result0 = [result0, result1, result2];
@@ -822,136 +1062,6 @@ Splaf.Parser = (function(){
         reportFailures--;
         if (reportFailures === 0 && result0 === null) {
           matchFailed("express\xE3o unit\xE1ria");
-        }
-        return result0;
-      }
-      
-      function parse_oper() {
-        var result0;
-        
-        reportFailures++;
-        if (input.substr(pos, 2) === ">=") {
-          result0 = ">=";
-          pos += 2;
-        } else {
-          result0 = null;
-          if (reportFailures === 0) {
-            matchFailed("\">=\"");
-          }
-        }
-        if (result0 === null) {
-          if (input.substr(pos, 2) === "<=") {
-            result0 = "<=";
-            pos += 2;
-          } else {
-            result0 = null;
-            if (reportFailures === 0) {
-              matchFailed("\"<=\"");
-            }
-          }
-          if (result0 === null) {
-            if (input.substr(pos, 2) === "==") {
-              result0 = "==";
-              pos += 2;
-            } else {
-              result0 = null;
-              if (reportFailures === 0) {
-                matchFailed("\"==\"");
-              }
-            }
-            if (result0 === null) {
-              if (input.substr(pos, 7) === "igual a") {
-                result0 = "igual a";
-                pos += 7;
-              } else {
-                result0 = null;
-                if (reportFailures === 0) {
-                  matchFailed("\"igual a\"");
-                }
-              }
-              if (result0 === null) {
-                if (input.substr(pos, 9) === "\xE9 igual a") {
-                  result0 = "\xE9 igual a";
-                  pos += 9;
-                } else {
-                  result0 = null;
-                  if (reportFailures === 0) {
-                    matchFailed("\"\\xE9 igual a\"");
-                  }
-                }
-                if (result0 === null) {
-                  if (input.substr(pos, 11) === "for igual a") {
-                    result0 = "for igual a";
-                    pos += 11;
-                  } else {
-                    result0 = null;
-                    if (reportFailures === 0) {
-                      matchFailed("\"for igual a\"");
-                    }
-                  }
-                  if (result0 === null) {
-                    if (input.substr(pos, 2) === "!=") {
-                      result0 = "!=";
-                      pos += 2;
-                    } else {
-                      result0 = null;
-                      if (reportFailures === 0) {
-                        matchFailed("\"!=\"");
-                      }
-                    }
-                    if (result0 === null) {
-                      if (input.substr(pos, 12) === "diferente de") {
-                        result0 = "diferente de";
-                        pos += 12;
-                      } else {
-                        result0 = null;
-                        if (reportFailures === 0) {
-                          matchFailed("\"diferente de\"");
-                        }
-                      }
-                      if (result0 === null) {
-                        if (input.substr(pos, 14) === "\xE9 diferente de") {
-                          result0 = "\xE9 diferente de";
-                          pos += 14;
-                        } else {
-                          result0 = null;
-                          if (reportFailures === 0) {
-                            matchFailed("\"\\xE9 diferente de\"");
-                          }
-                        }
-                        if (result0 === null) {
-                          if (input.substr(pos, 16) === "for diferente de") {
-                            result0 = "for diferente de";
-                            pos += 16;
-                          } else {
-                            result0 = null;
-                            if (reportFailures === 0) {
-                              matchFailed("\"for diferente de\"");
-                            }
-                          }
-                          if (result0 === null) {
-                            if (/^[+-\/*^%<>]/.test(input.charAt(pos))) {
-                              result0 = input.charAt(pos);
-                              pos++;
-                            } else {
-                              result0 = null;
-                              if (reportFailures === 0) {
-                                matchFailed("[+-\\/*^%<>]");
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-        reportFailures--;
-        if (reportFailures === 0 && result0 === null) {
-          matchFailed("operador");
         }
         return result0;
       }
@@ -1221,7 +1331,7 @@ Splaf.Parser = (function(){
           }
         }
         if (result0 !== null) {
-          result1 = parse_AdditiveExpression();
+          result1 = parse_ComparisonExpression();
           if (result1 !== null) {
             if (input.charCodeAt(pos) === 41) {
               result2 = ")";
@@ -1384,7 +1494,7 @@ Splaf.Parser = (function(){
             result1 = null;
           }
           if (result1 !== null) {
-            result2 = parse_AdditiveExpression();
+            result2 = parse_ComparisonExpression();
             if (result2 !== null) {
               result4 = parse_ws();
               if (result4 !== null) {
@@ -1576,7 +1686,7 @@ Splaf.Parser = (function(){
             result1 = null;
           }
           if (result1 !== null) {
-            result2 = parse_AdditiveExpression();
+            result2 = parse_ComparisonExpression();
             if (result2 !== null) {
               result3 = parse__();
               if (result3 !== null) {
@@ -1754,7 +1864,7 @@ Splaf.Parser = (function(){
             result3 = parse_ws();
             result3 = result3 !== null ? result3 : "";
             if (result3 !== null) {
-              result4 = parse_AdditiveExpression();
+              result4 = parse_ComparisonExpression();
               if (result4 !== null) {
                 result3 = [result3, result4];
               } else {
@@ -1773,7 +1883,7 @@ Splaf.Parser = (function(){
                 result3 = parse_ws();
                 result3 = result3 !== null ? result3 : "";
                 if (result3 !== null) {
-                  result4 = parse_AdditiveExpression();
+                  result4 = parse_ComparisonExpression();
                   if (result4 !== null) {
                     result3 = [result3, result4];
                   } else {

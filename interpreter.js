@@ -89,6 +89,12 @@ Splaf.Interpreter = (function() {
                || node.operator === "for diferente de") {
         return left != right
       }
+      else if (node.operator === "e") {
+        return left && right
+      }
+      else if (node.operator === "ou") {
+        return left || right
+      }
     },
 
     "variable": function(node) {

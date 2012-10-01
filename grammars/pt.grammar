@@ -41,8 +41,8 @@ identifiername "identificador"
     }
 
 MultiplicativeExpression
-  = head:literal
-    tail:(_ MultiplicativeOperator _ literal)* {
+  = head:(literal / identifier)
+    tail:(_ MultiplicativeOperator _ (literal / identifier))* {
       var result = head;
       for (var i = 0; i < tail.length; i++) {
         result = {
@@ -74,19 +74,25 @@ AdditiveExpression
 AdditiveOperator
   = [+-]
 
-UnitaryExpression "expressão unitária"
-  = op:("não" / "-") _ operand:(UnitaryExpression / AdditiveExpression) {
-      return { 
-        type: "unaryop", 
-        operator: op, 
-        arg: operand 
+ComparisonExpression "expressão comparativa"
+  = head:AdditiveExpression
+    tail:(_ ComparisonOperator _ AdditiveExpression)* {
+      var result = head;
+      for (var i = 0; i < tail.length; i++) {
+        result = {
+          type:     "binaryop",
+          operator: tail[i][1],
+          args:     [result, tail[i][3]]
+        };
       }
+      return result;
     }
-  / primary
 
-oper "operador"
+ComparisonOperator "operador de comparação"
   = ">="
+  / ">"
   / "<="
+  / "<"
   / "=="
   / "igual a"
   / "é igual a"
@@ -95,7 +101,44 @@ oper "operador"
   / "diferente de"
   / "é diferente de"
   / "for diferente de"
-  / [+-/\*^%<>]
+
+UnitaryExpression "expressão unitária"
+  = op:("não" / "-") _ operand:(UnitaryExpression / ComparisonExpression) {
+      return { 
+        type: "unaryop", 
+        operator: op, 
+        arg: operand 
+      }
+    }
+  / primary
+
+LogicalAndExpression "expressão lógica 'e'"
+  = head:ComparisonExpression
+    tail:(_ "e" _ ComparisonExpression)* {
+      var result = head;
+      for (var i = 0; i < tail.length; i++) {
+        result = {
+          type:     "binaryop",
+          operator: tail[i][1],
+          args:     [result, tail[i][3]]
+        };
+      }
+      return result;
+    }
+
+LogicalOrExpression "expressão lógica 'ou'"
+  = head:LogicalAndExpression
+    tail:(_ "ou" _ LogicalAndExpression)* {
+      var result = head;
+      for (var i = 0; i < tail.length; i++) {
+        result = {
+          type:     "binaryop",
+          operator: tail[i][1],
+          args:     [result, tail[i][3]]
+        };
+      }
+      return result;
+    }
 
 primary "expressão primária"
   = (identifier / literal / parentesis)
@@ -132,7 +175,7 @@ text "texto"
     }
 
 parentesis "parêntesis"
-  = "(" val:AdditiveExpression ")" {
+  = "(" val:ComparisonExpression ")" {
       return val
     }
 
@@ -145,7 +188,7 @@ block "bloco"
     }
 
 if "se"
-  = "se" ws+ cond:AdditiveExpression ws+ "então" _ lb
+  = "se" ws+ cond:ComparisonExpression ws+ "então" _ lb
     _ ifval:(statement / block) _ lb
     _ elseval:("senão" _ lb (statement / block))? _ lb {
       return {
@@ -157,7 +200,7 @@ if "se"
     }
 
 while "enquanto"
-  = "enquanto" ws+ cond:AdditiveExpression _ lb
+  = "enquanto" ws+ cond:ComparisonExpression _ lb
     _ whileval:(statement / block) _ lb {
       return {
         type: "while",
@@ -175,7 +218,7 @@ prompt "pedido"
     }
 
 print "apresentação"
-  = "diz" ws+ args:((ws? AdditiveExpression)+)? _ lb {
+  = "diz" ws+ args:((ws? ComparisonExpression)+)? _ lb {
       return {
         type: "print",
         arguments: args ? args.map(function(a) { return a[1] }) : null
