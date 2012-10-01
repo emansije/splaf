@@ -1,16 +1,16 @@
 // Adapted from <divergent>coder's toy language grammar
 // http://divergentcoder.com/javascript/playing-with-peg-js/
 
-start 
+start "início"
   = statement*
 
-statement 
+statement "declaração"
   = _ lb stmt:(attribution / if / while / print / prompt) _ lb { 
       return stmt; 
     }
 
-attribution
-  = id:identifiername _ "=" _ val:expr { 
+attribution "atribuição"
+  = id:identifiername _ "=" _ val:AdditiveExpression { 
       return { 
         type: "attribution", 
         name: id, 
@@ -18,30 +18,64 @@ attribution
       } 
     }
 
-functionname
+functionname "nome de função"
   = "diz"
   / "enquanto"
   / "pede"
   / "se"
 
-reserved
+reserved "reservado"
   = functionname
   / "começa"
+  / "e"
   / "então"
+  / "não"
+  / "ou"
   / "termina"
 
-identifiername
+identifiername "identificador"
   = !reserved
     first:[a-zA-Z_áàãâéêíóõôúçÁÀÃÂÉÊÍÓÕÔÚÇ]
     rest:[0-9a-zA-Z_áàãâéêíóõôúçÁÀÃÂÉÊÍÓÕÔÚÇ]* {
       return first + rest.join("")
     }
 
-expr
-  = binaryop / unaryop
+MultiplicativeExpression
+  = head:literal
+    tail:(_ MultiplicativeOperator _ literal)* {
+      var result = head;
+      for (var i = 0; i < tail.length; i++) {
+        result = {
+          type:     "binaryop",
+          operator: tail[i][1],
+          args:     [result, tail[i][3]]
+        };
+      }
+      return result;
+    }
 
-unaryop
-  = op:[!~] operand:(unaryop / expr) {
+MultiplicativeOperator
+  = operator:("*" / "/" / "%") !"=" { return operator; }
+
+AdditiveExpression
+  = head:MultiplicativeExpression
+    tail:(_ AdditiveOperator _ MultiplicativeExpression)* {
+      var result = head;
+      for (var i = 0; i < tail.length; i++) {
+        result = {
+          type:     "binaryop",
+          operator: tail[i][1],
+          args:     [result, tail[i][3]]
+        };
+      }
+      return result;
+    }
+
+AdditiveOperator
+  = [+-]
+
+UnitaryExpression "expressão unitária"
+  = op:("não" / "-") _ operand:(UnitaryExpression / AdditiveExpression) {
       return { 
         type: "unaryop", 
         operator: op, 
@@ -50,21 +84,23 @@ unaryop
     }
   / primary
 
-oper = [+-/\*^%<>]
+oper "operador"
+  = ">="
+  / "<="
+  / "=="
+  / "igual a"
+  / "é igual a"
+  / "for igual a"
+  / "!="
+  / "diferente de"
+  / "é diferente de"
+  / "for diferente de"
+  / [+-/\*^%<>]
 
-binaryop
-  = left:(primary / unaryop) ws* op:oper ws* right:expr {
-      return {
-        type: "binaryop",
-        operator: op,
-        args: [left, right]
-      }
-    }
-
-primary
+primary "expressão primária"
   = (identifier / literal / parentesis)
 
-identifier 
+identifier "identificador"
   = id:identifiername { 
       return {
         type: "variable", 
@@ -72,7 +108,7 @@ identifier
       }
     }
 
-literal 
+literal "literal"
   = val:(real / integer / text) {
       return {
         type: "literal",
@@ -80,27 +116,27 @@ literal
       }
     }
 
-integer
+integer "inteiro"
   = digits:[0-9]+ { 
       return parseInt(digits.join("")); 
     }
 
-real
+real "real"
   = digits:(integer "." integer) { 
       return parseFloat(digits.join("")); 
     }
 
-text
+text "texto"
   = '"' str:([^\"]*) '"' {
       return str.join("")
     }
 
-parentesis
-  = "(" val:expr ")" {
+parentesis "parêntesis"
+  = "(" val:AdditiveExpression ")" {
       return val
     }
 
-block
+block "bloco"
   = _ "começa" _ lb stmts:statement* _ lb "termina" {
       return {
         type: "block",
@@ -108,8 +144,8 @@ block
       }
     }
 
-if
-  = "se" ws+ cond:expr ws+ "então" _ lb
+if "se"
+  = "se" ws+ cond:AdditiveExpression ws+ "então" _ lb
     _ ifval:(statement / block) _ lb
     _ elseval:("senão" _ lb (statement / block))? _ lb {
       return {
@@ -120,8 +156,8 @@ if
       }
     }
 
-while
-  = "enquanto" ws+ cond:expr _ lb
+while "enquanto"
+  = "enquanto" ws+ cond:AdditiveExpression _ lb
     _ whileval:(statement / block) _ lb {
       return {
         type: "while",
@@ -130,7 +166,7 @@ while
       }
     }
 
-prompt
+prompt "pedido"
   = "pede" ws+ id:identifiername _ lb {
       return {
         type: "prompt",
@@ -138,19 +174,19 @@ prompt
       }
     }
 
-print
-  = "diz" ws+ args:((ws? expr)+)? _ lb {
+print "apresentação"
+  = "diz" ws+ args:((ws? AdditiveExpression)+)? _ lb {
       return {
         type: "print",
         arguments: args ? args.map(function(a) { return a[1] }) : null
       }
     }
 
-ws 
+ws "um espaço em branco"
   = [ \t]
 
-lb 
+lb "mudança de linha"
   = [\r\n]*
 
-_ 
+_ "espaço em branco"
   = ws*

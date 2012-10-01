@@ -47,10 +47,12 @@ Splaf.Parser = (function(){
         "functionname": parse_functionname,
         "reserved": parse_reserved,
         "identifiername": parse_identifiername,
-        "expr": parse_expr,
-        "unaryop": parse_unaryop,
+        "MultiplicativeExpression": parse_MultiplicativeExpression,
+        "MultiplicativeOperator": parse_MultiplicativeOperator,
+        "AdditiveExpression": parse_AdditiveExpression,
+        "AdditiveOperator": parse_AdditiveOperator,
+        "UnitaryExpression": parse_UnitaryExpression,
         "oper": parse_oper,
-        "binaryop": parse_binaryop,
         "primary": parse_primary,
         "identifier": parse_identifier,
         "literal": parse_literal,
@@ -124,11 +126,16 @@ Splaf.Parser = (function(){
       function parse_start() {
         var result0, result1;
         
+        reportFailures++;
         result0 = [];
         result1 = parse_statement();
         while (result1 !== null) {
           result0.push(result1);
           result1 = parse_statement();
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("in\xEDcio");
         }
         return result0;
       }
@@ -137,6 +144,7 @@ Splaf.Parser = (function(){
         var result0, result1, result2, result3, result4;
         var pos0, pos1;
         
+        reportFailures++;
         pos0 = pos;
         pos1 = pos;
         result0 = parse__();
@@ -190,6 +198,10 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           pos = pos0;
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("declara\xE7\xE3o");
+        }
         return result0;
       }
       
@@ -197,6 +209,7 @@ Splaf.Parser = (function(){
         var result0, result1, result2, result3, result4;
         var pos0, pos1;
         
+        reportFailures++;
         pos0 = pos;
         pos1 = pos;
         result0 = parse_identifiername();
@@ -215,7 +228,7 @@ Splaf.Parser = (function(){
             if (result2 !== null) {
               result3 = parse__();
               if (result3 !== null) {
-                result4 = parse_expr();
+                result4 = parse_AdditiveExpression();
                 if (result4 !== null) {
                   result0 = [result0, result1, result2, result3, result4];
                 } else {
@@ -250,12 +263,17 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           pos = pos0;
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("atribui\xE7\xE3o");
+        }
         return result0;
       }
       
       function parse_functionname() {
         var result0;
         
+        reportFailures++;
         if (input.substr(pos, 3) === "diz") {
           result0 = "diz";
           pos += 3;
@@ -298,12 +316,17 @@ Splaf.Parser = (function(){
             }
           }
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("nome de fun\xE7\xE3o");
+        }
         return result0;
       }
       
       function parse_reserved() {
         var result0;
         
+        reportFailures++;
         result0 = parse_functionname();
         if (result0 === null) {
           if (input.substr(pos, 6) === "come\xE7a") {
@@ -316,27 +339,64 @@ Splaf.Parser = (function(){
             }
           }
           if (result0 === null) {
-            if (input.substr(pos, 5) === "ent\xE3o") {
-              result0 = "ent\xE3o";
-              pos += 5;
+            if (input.charCodeAt(pos) === 101) {
+              result0 = "e";
+              pos++;
             } else {
               result0 = null;
               if (reportFailures === 0) {
-                matchFailed("\"ent\\xE3o\"");
+                matchFailed("\"e\"");
               }
             }
             if (result0 === null) {
-              if (input.substr(pos, 7) === "termina") {
-                result0 = "termina";
-                pos += 7;
+              if (input.substr(pos, 5) === "ent\xE3o") {
+                result0 = "ent\xE3o";
+                pos += 5;
               } else {
                 result0 = null;
                 if (reportFailures === 0) {
-                  matchFailed("\"termina\"");
+                  matchFailed("\"ent\\xE3o\"");
+                }
+              }
+              if (result0 === null) {
+                if (input.substr(pos, 3) === "n\xE3o") {
+                  result0 = "n\xE3o";
+                  pos += 3;
+                } else {
+                  result0 = null;
+                  if (reportFailures === 0) {
+                    matchFailed("\"n\\xE3o\"");
+                  }
+                }
+                if (result0 === null) {
+                  if (input.substr(pos, 2) === "ou") {
+                    result0 = "ou";
+                    pos += 2;
+                  } else {
+                    result0 = null;
+                    if (reportFailures === 0) {
+                      matchFailed("\"ou\"");
+                    }
+                  }
+                  if (result0 === null) {
+                    if (input.substr(pos, 7) === "termina") {
+                      result0 = "termina";
+                      pos += 7;
+                    } else {
+                      result0 = null;
+                      if (reportFailures === 0) {
+                        matchFailed("\"termina\"");
+                      }
+                    }
+                  }
                 }
               }
             }
           }
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("reservado");
         }
         return result0;
       }
@@ -345,6 +405,7 @@ Splaf.Parser = (function(){
         var result0, result1, result2, result3;
         var pos0, pos1, pos2;
         
+        reportFailures++;
         pos0 = pos;
         pos1 = pos;
         pos2 = pos;
@@ -412,41 +473,329 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           pos = pos0;
         }
-        return result0;
-      }
-      
-      function parse_expr() {
-        var result0;
-        
-        result0 = parse_binaryop();
-        if (result0 === null) {
-          result0 = parse_unaryop();
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("identificador");
         }
         return result0;
       }
       
-      function parse_unaryop() {
-        var result0, result1;
-        var pos0, pos1;
+      function parse_MultiplicativeExpression() {
+        var result0, result1, result2, result3, result4, result5;
+        var pos0, pos1, pos2;
         
         pos0 = pos;
         pos1 = pos;
-        if (/^[!~]/.test(input.charAt(pos))) {
+        result0 = parse_literal();
+        if (result0 !== null) {
+          result1 = [];
+          pos2 = pos;
+          result2 = parse__();
+          if (result2 !== null) {
+            result3 = parse_MultiplicativeOperator();
+            if (result3 !== null) {
+              result4 = parse__();
+              if (result4 !== null) {
+                result5 = parse_literal();
+                if (result5 !== null) {
+                  result2 = [result2, result3, result4, result5];
+                } else {
+                  result2 = null;
+                  pos = pos2;
+                }
+              } else {
+                result2 = null;
+                pos = pos2;
+              }
+            } else {
+              result2 = null;
+              pos = pos2;
+            }
+          } else {
+            result2 = null;
+            pos = pos2;
+          }
+          while (result2 !== null) {
+            result1.push(result2);
+            pos2 = pos;
+            result2 = parse__();
+            if (result2 !== null) {
+              result3 = parse_MultiplicativeOperator();
+              if (result3 !== null) {
+                result4 = parse__();
+                if (result4 !== null) {
+                  result5 = parse_literal();
+                  if (result5 !== null) {
+                    result2 = [result2, result3, result4, result5];
+                  } else {
+                    result2 = null;
+                    pos = pos2;
+                  }
+                } else {
+                  result2 = null;
+                  pos = pos2;
+                }
+              } else {
+                result2 = null;
+                pos = pos2;
+              }
+            } else {
+              result2 = null;
+              pos = pos2;
+            }
+          }
+          if (result1 !== null) {
+            result0 = [result0, result1];
+          } else {
+            result0 = null;
+            pos = pos1;
+          }
+        } else {
+          result0 = null;
+          pos = pos1;
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, head, tail) {
+              var result = head;
+              for (var i = 0; i < tail.length; i++) {
+                result = {
+                  type:     "binaryop",
+                  operator: tail[i][1],
+                  args:     [result, tail[i][3]]
+                };
+              }
+              return result;
+            })(pos0, result0[0], result0[1]);
+        }
+        if (result0 === null) {
+          pos = pos0;
+        }
+        return result0;
+      }
+      
+      function parse_MultiplicativeOperator() {
+        var result0, result1;
+        var pos0, pos1, pos2;
+        
+        pos0 = pos;
+        pos1 = pos;
+        if (input.charCodeAt(pos) === 42) {
+          result0 = "*";
+          pos++;
+        } else {
+          result0 = null;
+          if (reportFailures === 0) {
+            matchFailed("\"*\"");
+          }
+        }
+        if (result0 === null) {
+          if (input.charCodeAt(pos) === 47) {
+            result0 = "/";
+            pos++;
+          } else {
+            result0 = null;
+            if (reportFailures === 0) {
+              matchFailed("\"/\"");
+            }
+          }
+          if (result0 === null) {
+            if (input.charCodeAt(pos) === 37) {
+              result0 = "%";
+              pos++;
+            } else {
+              result0 = null;
+              if (reportFailures === 0) {
+                matchFailed("\"%\"");
+              }
+            }
+          }
+        }
+        if (result0 !== null) {
+          pos2 = pos;
+          reportFailures++;
+          if (input.charCodeAt(pos) === 61) {
+            result1 = "=";
+            pos++;
+          } else {
+            result1 = null;
+            if (reportFailures === 0) {
+              matchFailed("\"=\"");
+            }
+          }
+          reportFailures--;
+          if (result1 === null) {
+            result1 = "";
+          } else {
+            result1 = null;
+            pos = pos2;
+          }
+          if (result1 !== null) {
+            result0 = [result0, result1];
+          } else {
+            result0 = null;
+            pos = pos1;
+          }
+        } else {
+          result0 = null;
+          pos = pos1;
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, operator) { return operator; })(pos0, result0[0]);
+        }
+        if (result0 === null) {
+          pos = pos0;
+        }
+        return result0;
+      }
+      
+      function parse_AdditiveExpression() {
+        var result0, result1, result2, result3, result4, result5;
+        var pos0, pos1, pos2;
+        
+        pos0 = pos;
+        pos1 = pos;
+        result0 = parse_MultiplicativeExpression();
+        if (result0 !== null) {
+          result1 = [];
+          pos2 = pos;
+          result2 = parse__();
+          if (result2 !== null) {
+            result3 = parse_AdditiveOperator();
+            if (result3 !== null) {
+              result4 = parse__();
+              if (result4 !== null) {
+                result5 = parse_MultiplicativeExpression();
+                if (result5 !== null) {
+                  result2 = [result2, result3, result4, result5];
+                } else {
+                  result2 = null;
+                  pos = pos2;
+                }
+              } else {
+                result2 = null;
+                pos = pos2;
+              }
+            } else {
+              result2 = null;
+              pos = pos2;
+            }
+          } else {
+            result2 = null;
+            pos = pos2;
+          }
+          while (result2 !== null) {
+            result1.push(result2);
+            pos2 = pos;
+            result2 = parse__();
+            if (result2 !== null) {
+              result3 = parse_AdditiveOperator();
+              if (result3 !== null) {
+                result4 = parse__();
+                if (result4 !== null) {
+                  result5 = parse_MultiplicativeExpression();
+                  if (result5 !== null) {
+                    result2 = [result2, result3, result4, result5];
+                  } else {
+                    result2 = null;
+                    pos = pos2;
+                  }
+                } else {
+                  result2 = null;
+                  pos = pos2;
+                }
+              } else {
+                result2 = null;
+                pos = pos2;
+              }
+            } else {
+              result2 = null;
+              pos = pos2;
+            }
+          }
+          if (result1 !== null) {
+            result0 = [result0, result1];
+          } else {
+            result0 = null;
+            pos = pos1;
+          }
+        } else {
+          result0 = null;
+          pos = pos1;
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, head, tail) {
+              var result = head;
+              for (var i = 0; i < tail.length; i++) {
+                result = {
+                  type:     "binaryop",
+                  operator: tail[i][1],
+                  args:     [result, tail[i][3]]
+                };
+              }
+              return result;
+            })(pos0, result0[0], result0[1]);
+        }
+        if (result0 === null) {
+          pos = pos0;
+        }
+        return result0;
+      }
+      
+      function parse_AdditiveOperator() {
+        var result0;
+        
+        if (/^[+\-]/.test(input.charAt(pos))) {
           result0 = input.charAt(pos);
           pos++;
         } else {
           result0 = null;
           if (reportFailures === 0) {
-            matchFailed("[!~]");
+            matchFailed("[+\\-]");
+          }
+        }
+        return result0;
+      }
+      
+      function parse_UnitaryExpression() {
+        var result0, result1, result2;
+        var pos0, pos1;
+        
+        reportFailures++;
+        pos0 = pos;
+        pos1 = pos;
+        if (input.substr(pos, 3) === "n\xE3o") {
+          result0 = "n\xE3o";
+          pos += 3;
+        } else {
+          result0 = null;
+          if (reportFailures === 0) {
+            matchFailed("\"n\\xE3o\"");
+          }
+        }
+        if (result0 === null) {
+          if (input.charCodeAt(pos) === 45) {
+            result0 = "-";
+            pos++;
+          } else {
+            result0 = null;
+            if (reportFailures === 0) {
+              matchFailed("\"-\"");
+            }
           }
         }
         if (result0 !== null) {
-          result1 = parse_unaryop();
-          if (result1 === null) {
-            result1 = parse_expr();
-          }
+          result1 = parse__();
           if (result1 !== null) {
-            result0 = [result0, result1];
+            result2 = parse_UnitaryExpression();
+            if (result2 === null) {
+              result2 = parse_AdditiveExpression();
+            }
+            if (result2 !== null) {
+              result0 = [result0, result1, result2];
+            } else {
+              result0 = null;
+              pos = pos1;
+            }
           } else {
             result0 = null;
             pos = pos1;
@@ -462,7 +811,7 @@ Splaf.Parser = (function(){
                 operator: op, 
                 arg: operand 
               }
-            })(pos0, result0[0], result0[1]);
+            })(pos0, result0[0], result0[2]);
         }
         if (result0 === null) {
           pos = pos0;
@@ -470,85 +819,139 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           result0 = parse_primary();
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("express\xE3o unit\xE1ria");
+        }
         return result0;
       }
       
       function parse_oper() {
         var result0;
         
-        if (/^[+-\/*^%<>]/.test(input.charAt(pos))) {
-          result0 = input.charAt(pos);
-          pos++;
+        reportFailures++;
+        if (input.substr(pos, 2) === ">=") {
+          result0 = ">=";
+          pos += 2;
         } else {
           result0 = null;
           if (reportFailures === 0) {
-            matchFailed("[+-\\/*^%<>]");
+            matchFailed("\">=\"");
           }
         }
-        return result0;
-      }
-      
-      function parse_binaryop() {
-        var result0, result1, result2, result3, result4;
-        var pos0, pos1;
-        
-        pos0 = pos;
-        pos1 = pos;
-        result0 = parse_primary();
         if (result0 === null) {
-          result0 = parse_unaryop();
-        }
-        if (result0 !== null) {
-          result1 = [];
-          result2 = parse_ws();
-          while (result2 !== null) {
-            result1.push(result2);
-            result2 = parse_ws();
-          }
-          if (result1 !== null) {
-            result2 = parse_oper();
-            if (result2 !== null) {
-              result3 = [];
-              result4 = parse_ws();
-              while (result4 !== null) {
-                result3.push(result4);
-                result4 = parse_ws();
-              }
-              if (result3 !== null) {
-                result4 = parse_expr();
-                if (result4 !== null) {
-                  result0 = [result0, result1, result2, result3, result4];
-                } else {
-                  result0 = null;
-                  pos = pos1;
-                }
-              } else {
-                result0 = null;
-                pos = pos1;
-              }
-            } else {
-              result0 = null;
-              pos = pos1;
-            }
+          if (input.substr(pos, 2) === "<=") {
+            result0 = "<=";
+            pos += 2;
           } else {
             result0 = null;
-            pos = pos1;
+            if (reportFailures === 0) {
+              matchFailed("\"<=\"");
+            }
           }
-        } else {
-          result0 = null;
-          pos = pos1;
-        }
-        if (result0 !== null) {
-          result0 = (function(offset, left, op, right) {
-              return {
-                type: "binaryop",
-                operator: op,
-                args: [left, right]
+          if (result0 === null) {
+            if (input.substr(pos, 2) === "==") {
+              result0 = "==";
+              pos += 2;
+            } else {
+              result0 = null;
+              if (reportFailures === 0) {
+                matchFailed("\"==\"");
               }
-            })(pos0, result0[0], result0[2], result0[4]);
+            }
+            if (result0 === null) {
+              if (input.substr(pos, 7) === "igual a") {
+                result0 = "igual a";
+                pos += 7;
+              } else {
+                result0 = null;
+                if (reportFailures === 0) {
+                  matchFailed("\"igual a\"");
+                }
+              }
+              if (result0 === null) {
+                if (input.substr(pos, 9) === "\xE9 igual a") {
+                  result0 = "\xE9 igual a";
+                  pos += 9;
+                } else {
+                  result0 = null;
+                  if (reportFailures === 0) {
+                    matchFailed("\"\\xE9 igual a\"");
+                  }
+                }
+                if (result0 === null) {
+                  if (input.substr(pos, 11) === "for igual a") {
+                    result0 = "for igual a";
+                    pos += 11;
+                  } else {
+                    result0 = null;
+                    if (reportFailures === 0) {
+                      matchFailed("\"for igual a\"");
+                    }
+                  }
+                  if (result0 === null) {
+                    if (input.substr(pos, 2) === "!=") {
+                      result0 = "!=";
+                      pos += 2;
+                    } else {
+                      result0 = null;
+                      if (reportFailures === 0) {
+                        matchFailed("\"!=\"");
+                      }
+                    }
+                    if (result0 === null) {
+                      if (input.substr(pos, 12) === "diferente de") {
+                        result0 = "diferente de";
+                        pos += 12;
+                      } else {
+                        result0 = null;
+                        if (reportFailures === 0) {
+                          matchFailed("\"diferente de\"");
+                        }
+                      }
+                      if (result0 === null) {
+                        if (input.substr(pos, 14) === "\xE9 diferente de") {
+                          result0 = "\xE9 diferente de";
+                          pos += 14;
+                        } else {
+                          result0 = null;
+                          if (reportFailures === 0) {
+                            matchFailed("\"\\xE9 diferente de\"");
+                          }
+                        }
+                        if (result0 === null) {
+                          if (input.substr(pos, 16) === "for diferente de") {
+                            result0 = "for diferente de";
+                            pos += 16;
+                          } else {
+                            result0 = null;
+                            if (reportFailures === 0) {
+                              matchFailed("\"for diferente de\"");
+                            }
+                          }
+                          if (result0 === null) {
+                            if (/^[+-\/*^%<>]/.test(input.charAt(pos))) {
+                              result0 = input.charAt(pos);
+                              pos++;
+                            } else {
+                              result0 = null;
+                              if (reportFailures === 0) {
+                                matchFailed("[+-\\/*^%<>]");
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
-        if (result0 === null) {
-          pos = pos0;
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("operador");
         }
         return result0;
       }
@@ -556,12 +959,17 @@ Splaf.Parser = (function(){
       function parse_primary() {
         var result0;
         
+        reportFailures++;
         result0 = parse_identifier();
         if (result0 === null) {
           result0 = parse_literal();
           if (result0 === null) {
             result0 = parse_parentesis();
           }
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("express\xE3o prim\xE1ria");
         }
         return result0;
       }
@@ -570,6 +978,7 @@ Splaf.Parser = (function(){
         var result0;
         var pos0;
         
+        reportFailures++;
         pos0 = pos;
         result0 = parse_identifiername();
         if (result0 !== null) {
@@ -583,6 +992,10 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           pos = pos0;
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("identificador");
+        }
         return result0;
       }
       
@@ -590,6 +1003,7 @@ Splaf.Parser = (function(){
         var result0;
         var pos0;
         
+        reportFailures++;
         pos0 = pos;
         result0 = parse_real();
         if (result0 === null) {
@@ -609,6 +1023,10 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           pos = pos0;
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("literal");
+        }
         return result0;
       }
       
@@ -616,6 +1034,7 @@ Splaf.Parser = (function(){
         var result0, result1;
         var pos0;
         
+        reportFailures++;
         pos0 = pos;
         if (/^[0-9]/.test(input.charAt(pos))) {
           result1 = input.charAt(pos);
@@ -651,6 +1070,10 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           pos = pos0;
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("inteiro");
+        }
         return result0;
       }
       
@@ -658,6 +1081,7 @@ Splaf.Parser = (function(){
         var result0, result1, result2;
         var pos0, pos1;
         
+        reportFailures++;
         pos0 = pos;
         pos1 = pos;
         result0 = parse_integer();
@@ -695,6 +1119,10 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           pos = pos0;
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("real");
+        }
         return result0;
       }
       
@@ -702,6 +1130,7 @@ Splaf.Parser = (function(){
         var result0, result1, result2;
         var pos0, pos1;
         
+        reportFailures++;
         pos0 = pos;
         pos1 = pos;
         if (input.charCodeAt(pos) === 34) {
@@ -768,6 +1197,10 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           pos = pos0;
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("texto");
+        }
         return result0;
       }
       
@@ -775,6 +1208,7 @@ Splaf.Parser = (function(){
         var result0, result1, result2;
         var pos0, pos1;
         
+        reportFailures++;
         pos0 = pos;
         pos1 = pos;
         if (input.charCodeAt(pos) === 40) {
@@ -787,7 +1221,7 @@ Splaf.Parser = (function(){
           }
         }
         if (result0 !== null) {
-          result1 = parse_expr();
+          result1 = parse_AdditiveExpression();
           if (result1 !== null) {
             if (input.charCodeAt(pos) === 41) {
               result2 = ")";
@@ -820,6 +1254,10 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           pos = pos0;
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("par\xEAntesis");
+        }
         return result0;
       }
       
@@ -827,6 +1265,7 @@ Splaf.Parser = (function(){
         var result0, result1, result2, result3, result4, result5, result6, result7;
         var pos0, pos1;
         
+        reportFailures++;
         pos0 = pos;
         pos1 = pos;
         result0 = parse__();
@@ -910,6 +1349,10 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           pos = pos0;
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("bloco");
+        }
         return result0;
       }
       
@@ -917,6 +1360,7 @@ Splaf.Parser = (function(){
         var result0, result1, result2, result3, result4, result5, result6, result7, result8, result9, result10, result11, result12, result13, result14, result15;
         var pos0, pos1, pos2;
         
+        reportFailures++;
         pos0 = pos;
         pos1 = pos;
         if (input.substr(pos, 2) === "se") {
@@ -940,7 +1384,7 @@ Splaf.Parser = (function(){
             result1 = null;
           }
           if (result1 !== null) {
-            result2 = parse_expr();
+            result2 = parse_AdditiveExpression();
             if (result2 !== null) {
               result4 = parse_ws();
               if (result4 !== null) {
@@ -1097,6 +1541,10 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           pos = pos0;
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("se");
+        }
         return result0;
       }
       
@@ -1104,6 +1552,7 @@ Splaf.Parser = (function(){
         var result0, result1, result2, result3, result4, result5, result6, result7, result8;
         var pos0, pos1;
         
+        reportFailures++;
         pos0 = pos;
         pos1 = pos;
         if (input.substr(pos, 8) === "enquanto") {
@@ -1127,7 +1576,7 @@ Splaf.Parser = (function(){
             result1 = null;
           }
           if (result1 !== null) {
-            result2 = parse_expr();
+            result2 = parse_AdditiveExpression();
             if (result2 !== null) {
               result3 = parse__();
               if (result3 !== null) {
@@ -1193,6 +1642,10 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           pos = pos0;
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("enquanto");
+        }
         return result0;
       }
       
@@ -1200,6 +1653,7 @@ Splaf.Parser = (function(){
         var result0, result1, result2, result3, result4;
         var pos0, pos1;
         
+        reportFailures++;
         pos0 = pos;
         pos1 = pos;
         if (input.substr(pos, 4) === "pede") {
@@ -1261,6 +1715,10 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           pos = pos0;
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("pedido");
+        }
         return result0;
       }
       
@@ -1268,6 +1726,7 @@ Splaf.Parser = (function(){
         var result0, result1, result2, result3, result4;
         var pos0, pos1, pos2;
         
+        reportFailures++;
         pos0 = pos;
         pos1 = pos;
         if (input.substr(pos, 3) === "diz") {
@@ -1295,7 +1754,7 @@ Splaf.Parser = (function(){
             result3 = parse_ws();
             result3 = result3 !== null ? result3 : "";
             if (result3 !== null) {
-              result4 = parse_expr();
+              result4 = parse_AdditiveExpression();
               if (result4 !== null) {
                 result3 = [result3, result4];
               } else {
@@ -1314,7 +1773,7 @@ Splaf.Parser = (function(){
                 result3 = parse_ws();
                 result3 = result3 !== null ? result3 : "";
                 if (result3 !== null) {
-                  result4 = parse_expr();
+                  result4 = parse_AdditiveExpression();
                   if (result4 !== null) {
                     result3 = [result3, result4];
                   } else {
@@ -1367,12 +1826,17 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           pos = pos0;
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("apresenta\xE7\xE3o");
+        }
         return result0;
       }
       
       function parse_ws() {
         var result0;
         
+        reportFailures++;
         if (/^[ \t]/.test(input.charAt(pos))) {
           result0 = input.charAt(pos);
           pos++;
@@ -1382,12 +1846,17 @@ Splaf.Parser = (function(){
             matchFailed("[ \\t]");
           }
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("um espa\xE7o em branco");
+        }
         return result0;
       }
       
       function parse_lb() {
         var result0, result1;
         
+        reportFailures++;
         result0 = [];
         if (/^[\r\n]/.test(input.charAt(pos))) {
           result1 = input.charAt(pos);
@@ -1410,17 +1879,26 @@ Splaf.Parser = (function(){
             }
           }
         }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("mudan\xE7a de linha");
+        }
         return result0;
       }
       
       function parse__() {
         var result0, result1;
         
+        reportFailures++;
         result0 = [];
         result1 = parse_ws();
         while (result1 !== null) {
           result0.push(result1);
           result1 = parse_ws();
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("espa\xE7o em branco");
         }
         return result0;
       }

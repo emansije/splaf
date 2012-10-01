@@ -36,11 +36,11 @@ Splaf.Interpreter = (function() {
 
     "unaryop": function(node) {
       var arg = EvalNode[node.arg.type](node.arg)
-      if (node.operator === "!") {
+      if (node.operator === "não") {
         return !arg;
       }
-      else if (node.operator === "~") {
-        return ~arg
+      else if (node.operator === "-") {
+        return -arg
       }
     },
 
@@ -65,11 +65,29 @@ Splaf.Interpreter = (function() {
       else if (node.operator === "%") {
         return left % right
       }
+      else if (node.operator === "<=") {
+        return left <= right
+      }
+      else if (node.operator === ">=") {
+        return left >= right
+      }
       else if (node.operator === "<") {
         return left < right
       }
       else if (node.operator === ">") {
         return left > right
+      }
+      else if (node.operator === "==" 
+               || node.operator === "igual a"
+               || node.operator === "é igual a"
+               || node.operator === "for igual a") {
+        return left == right
+      }
+      else if (node.operator === "!="
+               || node.operator === "diferente de"
+               || node.operator === "é diferente de"
+               || node.operator === "for diferente de") {
+        return left != right
       }
     },
 
