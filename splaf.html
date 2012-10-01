@@ -19,25 +19,25 @@
         <td colspan="2">
           <table width="100%">
             <tr>
-              <td align="center"><button id="newfile">New</button></td>
-              <td align="center">Load (local): <input type="file" id="loadfile" /></td>
-              <td align="center"><button id="savefile">Save (local)</button></td>
-              <td align="center"><button id="getfile">Get (from server)</button></td>
-              <td align="center"><button id="submitfile">Submit (to server)</button></td>
-              <td align="center"><button id="execute">Execute</button></td>
-              <td align="center"><button id="buildflowchart">Build flowchart</button></td>
+              <td align="center"><button id="newfile">Novo</button></td>
+              <td align="center">Abrir <input type="file" id="loadfile" /></td>
+              <td align="center"><button id="savefile">Guardar</button></td>
+              <td align="center"><button id="getfile">Buscar do servidor</button></td>
+              <td align="center"><button id="submitfile" disabled>Enviar para o servidor</button></td>
+              <td align="center"><button id="execute">Executar</button></td>
+              <td align="center"><button id="buildflowchart">Desenhar Fluxograma</button></td>
             </tr>
           </table>
         </td>
       </tr>
       <tr>
-        <th>Structured Language</th>
-        <th>Flowchart</th>
+        <th>Português Estruturado</th>
+        <th>Fluxograma</th>
       </tr>
       <tr>
         <td>
           <div>
-            <textarea id="sourcecode" rows="30" cols="60"></textarea>
+            <textarea id="sourcecode" rows="25" cols="60"></textarea>
           </div>
         </td>
         <td rowspan="3">
@@ -46,10 +46,10 @@
         </td>
       </tr>
       <tr>
-        <th>Output</th>
+        <th>Saída</th>
       </tr>
       <tr>
-        <td><div><textarea id="inout" rows="5" cols="60"></textarea></div></td>
+        <td><div><textarea id="inout" rows="10" cols="60"></textarea></div></td>
       </tr>
     </table>
   </body>
