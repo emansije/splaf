@@ -116,7 +116,7 @@ UnitaryExpression "expressão unitária"
 
 LogicalAndExpression "expressão lógica 'e'"
   = head:ComparisonExpression
-    tail:(_ "e" _ ComparisonExpression)* {
+    tail:(ws+ "e" ws+ ComparisonExpression)* {
       var result = head;
       for (var i = 0; i < tail.length; i++) {
         result = {
@@ -190,7 +190,7 @@ block "bloco"
     }
 
 if "se"
-  = "se" ws+ cond:ComparisonExpression ws+ "então" _ lb
+  = "se" ws+ cond:LogicalOrExpression ws+ "então" _ lb
     _ ifval:(statement / block) _ lb
     _ elseval:("senão" _ lb (statement / block))? _ lb {
       return {
@@ -202,7 +202,7 @@ if "se"
     }
 
 while "enquanto"
-  = "enquanto" ws+ cond:ComparisonExpression _ lb
+  = "enquanto" ws+ cond:LogicalOrExpression _ lb
     _ whileval:(statement / block) _ lb {
       return {
         type: "while",

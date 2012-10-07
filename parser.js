@@ -1079,7 +1079,16 @@ Splaf.Parser = (function(){
         if (result0 !== null) {
           result1 = [];
           pos2 = pos;
-          result2 = parse__();
+          result3 = parse_ws();
+          if (result3 !== null) {
+            result2 = [];
+            while (result3 !== null) {
+              result2.push(result3);
+              result3 = parse_ws();
+            }
+          } else {
+            result2 = null;
+          }
           if (result2 !== null) {
             if (input.charCodeAt(pos) === 101) {
               result3 = "e";
@@ -1091,7 +1100,16 @@ Splaf.Parser = (function(){
               }
             }
             if (result3 !== null) {
-              result4 = parse__();
+              result5 = parse_ws();
+              if (result5 !== null) {
+                result4 = [];
+                while (result5 !== null) {
+                  result4.push(result5);
+                  result5 = parse_ws();
+                }
+              } else {
+                result4 = null;
+              }
               if (result4 !== null) {
                 result5 = parse_ComparisonExpression();
                 if (result5 !== null) {
@@ -1115,7 +1133,16 @@ Splaf.Parser = (function(){
           while (result2 !== null) {
             result1.push(result2);
             pos2 = pos;
-            result2 = parse__();
+            result3 = parse_ws();
+            if (result3 !== null) {
+              result2 = [];
+              while (result3 !== null) {
+                result2.push(result3);
+                result3 = parse_ws();
+              }
+            } else {
+              result2 = null;
+            }
             if (result2 !== null) {
               if (input.charCodeAt(pos) === 101) {
                 result3 = "e";
@@ -1127,7 +1154,16 @@ Splaf.Parser = (function(){
                 }
               }
               if (result3 !== null) {
-                result4 = parse__();
+                result5 = parse_ws();
+                if (result5 !== null) {
+                  result4 = [];
+                  while (result5 !== null) {
+                    result4.push(result5);
+                    result5 = parse_ws();
+                  }
+                } else {
+                  result4 = null;
+                }
                 if (result4 !== null) {
                   result5 = parse_ComparisonExpression();
                   if (result5 !== null) {
@@ -1724,7 +1760,7 @@ Splaf.Parser = (function(){
             result1 = null;
           }
           if (result1 !== null) {
-            result2 = parse_ComparisonExpression();
+            result2 = parse_LogicalOrExpression();
             if (result2 !== null) {
               result4 = parse_ws();
               if (result4 !== null) {
@@ -1916,7 +1952,7 @@ Splaf.Parser = (function(){
             result1 = null;
           }
           if (result1 !== null) {
-            result2 = parse_ComparisonExpression();
+            result2 = parse_LogicalOrExpression();
             if (result2 !== null) {
               result3 = parse__();
               if (result3 !== null) {
