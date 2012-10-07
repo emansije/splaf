@@ -177,7 +177,7 @@ text "texto"
     }
 
 parenthesis "parêntesis"
-  = "(" val:ComparisonExpression ")" {
+  = "(" val:LogicalOrExpression ")" {
       return val
     }
 

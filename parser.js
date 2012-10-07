@@ -1597,7 +1597,7 @@ Splaf.Parser = (function(){
           }
         }
         if (result0 !== null) {
-          result1 = parse_ComparisonExpression();
+          result1 = parse_LogicalOrExpression();
           if (result1 !== null) {
             if (input.charCodeAt(pos) === 41) {
               result2 = ")";
