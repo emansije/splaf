@@ -43,8 +43,8 @@ identifiername "identificador"
     }
 
 MultiplicativeExpression
-  = head:primary
-    tail:(_ MultiplicativeOperator _ primary)* {
+  = head:UnitaryExpression
+    tail:(_ MultiplicativeOperator _ UnitaryExpression)* {
       var result = head;
       for (var i = 0; i < tail.length; i++) {
         result = {
@@ -105,7 +105,7 @@ ComparisonOperator "operador de comparação"
   / "for diferente de"
 
 UnitaryExpression "expressão unitária"
-  = op:("não" / "-") _ operand:(UnitaryExpression / ComparisonExpression) {
+  = op:("não" / "-") _ operand:(UnitaryExpression / primary) {
       return { 
         type: "unaryop", 
         operator: op, 

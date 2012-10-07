@@ -489,7 +489,7 @@ Splaf.Parser = (function(){
         
         pos0 = pos;
         pos1 = pos;
-        result0 = parse_primary();
+        result0 = parse_UnitaryExpression();
         if (result0 !== null) {
           result1 = [];
           pos2 = pos;
@@ -499,7 +499,7 @@ Splaf.Parser = (function(){
             if (result3 !== null) {
               result4 = parse__();
               if (result4 !== null) {
-                result5 = parse_primary();
+                result5 = parse_UnitaryExpression();
                 if (result5 !== null) {
                   result2 = [result2, result3, result4, result5];
                 } else {
@@ -527,7 +527,7 @@ Splaf.Parser = (function(){
               if (result3 !== null) {
                 result4 = parse__();
                 if (result4 !== null) {
-                  result5 = parse_primary();
+                  result5 = parse_UnitaryExpression();
                   if (result5 !== null) {
                     result2 = [result2, result3, result4, result5];
                   } else {
@@ -1030,7 +1030,7 @@ Splaf.Parser = (function(){
           if (result1 !== null) {
             result2 = parse_UnitaryExpression();
             if (result2 === null) {
-              result2 = parse_ComparisonExpression();
+              result2 = parse_primary();
             }
             if (result2 !== null) {
               result0 = [result0, result1, result2];
