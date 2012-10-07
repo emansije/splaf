@@ -1,5 +1,7 @@
 // Adapted from <divergent>coder's toy language grammar
 // http://divergentcoder.com/javascript/playing-with-peg-js/
+// and from David Majda's javascript interpreter
+// https://github.com/dmajda/pegjs/blob/master/examples/javascript.pegjs
 
 start "início"
   = statement*
@@ -42,7 +44,7 @@ identifiername "identificador"
 
 MultiplicativeExpression
   = head:primary
-    tail:(_ MultiplicativeOperator _ (literal / identifier))* {
+    tail:(_ MultiplicativeOperator _ primary)* {
       var result = head;
       for (var i = 0; i < tail.length; i++) {
         result = {
@@ -141,7 +143,7 @@ LogicalOrExpression "expressão lógica 'ou'"
     }
 
 primary "expressão primária"
-  = (identifier / literal / parentesis)
+  = (identifier / literal / parenthesis)
 
 identifier "identificador"
   = id:identifiername { 
@@ -174,7 +176,7 @@ text "texto"
       return str.join("")
     }
 
-parentesis "parêntesis"
+parenthesis "parêntesis"
   = "(" val:ComparisonExpression ")" {
       return val
     }

@@ -62,7 +62,7 @@ Splaf.Parser = (function(){
         "integer": parse_integer,
         "real": parse_real,
         "text": parse_text,
-        "parentesis": parse_parentesis,
+        "parenthesis": parse_parenthesis,
         "block": parse_block,
         "if": parse_if,
         "while": parse_while,
@@ -499,10 +499,7 @@ Splaf.Parser = (function(){
             if (result3 !== null) {
               result4 = parse__();
               if (result4 !== null) {
-                result5 = parse_literal();
-                if (result5 === null) {
-                  result5 = parse_identifier();
-                }
+                result5 = parse_primary();
                 if (result5 !== null) {
                   result2 = [result2, result3, result4, result5];
                 } else {
@@ -530,10 +527,7 @@ Splaf.Parser = (function(){
               if (result3 !== null) {
                 result4 = parse__();
                 if (result4 !== null) {
-                  result5 = parse_literal();
-                  if (result5 === null) {
-                    result5 = parse_identifier();
-                  }
+                  result5 = parse_primary();
                   if (result5 !== null) {
                     result2 = [result2, result3, result4, result5];
                   } else {
@@ -1310,7 +1304,7 @@ Splaf.Parser = (function(){
         if (result0 === null) {
           result0 = parse_literal();
           if (result0 === null) {
-            result0 = parse_parentesis();
+            result0 = parse_parenthesis();
           }
         }
         reportFailures--;
@@ -1550,7 +1544,7 @@ Splaf.Parser = (function(){
         return result0;
       }
       
-      function parse_parentesis() {
+      function parse_parenthesis() {
         var result0, result1, result2;
         var pos0, pos1;
         
