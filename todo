@@ -1,3 +1,4 @@
+Add boolean variables and statements. | id:179a08af0f88c71e4925c7a50272345b46484de1
 Implement addEventListener with jQuery | id:198c5890a8c7b8d3ec69fc4f52485bc29d937b98
 Convert verbose operators into compact ones in the flowchart. | id:282849e19d7c03287572c6ae311de1c1befd9dd7
 Verify if source code was modified and warn user on actions that will discard those modifications | id:3bcb598ee0495084dd3881c550fee2e9099637d1
