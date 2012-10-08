@@ -1,3 +1,4 @@
+Add >=, <=, ==, logical AND, OR and NOT to the grammar | id:274f8bc44e3e6ee7b161d4b522dee61149449e83
 Implement parser | id:555828ffa4e59f1ea30d47ace4993ff44475804a
 Flowchart automatic construction from the structured language | id:765757bbdeb83d6200c099b9fa756b2323df467c
 Saving to server | id:90cc94f0b58513cf08bba408ec8f70ca4585cdaf
