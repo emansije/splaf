@@ -92,20 +92,32 @@ ComparisonExpression "expressão comparativa"
 
 ComparisonOperator "operador de comparação"
   = ">="
+  / "for maior ou igual a"
+  / "é maior ou igual a"
   / ">"
+  / "for maior que"
+  / "é maior que"
   / "<="
+  / "for menor ou igual a"
+  / "é menor ou igual a"
   / "<"
+  / "for menor que"
+  / "é menor que"
   / "=="
-  / "igual a"
-  / "é igual a"
   / "for igual a"
+  / "é igual a"
+  / "igual a"
+  / "for"
+  / "é"
   / "!="
-  / "diferente de"
-  / "é diferente de"
   / "for diferente de"
+  / "é diferente de"
+  / "diferente de"
+  / "não for"
+  / "não é"
 
 UnitaryExpression "expressão unitária"
-  = op:("não" / "-") _ operand:(UnitaryExpression / primary) {
+  = op:(NotOperator / "-") _ operand:(UnitaryExpression / primary) {
       return { 
         type: "unaryop", 
         operator: op, 
@@ -113,6 +125,11 @@ UnitaryExpression "expressão unitária"
       }
     }
   / primary
+
+NotOperator "operador de negação"
+  = "não for verdade que"
+  / "não é verdade que"
+  / "não"
 
 LogicalAndExpression "expressão lógica 'e'"
   = head:ComparisonExpression

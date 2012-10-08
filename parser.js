@@ -54,6 +54,7 @@ Splaf.Parser = (function(){
         "ComparisonExpression": parse_ComparisonExpression,
         "ComparisonOperator": parse_ComparisonOperator,
         "UnitaryExpression": parse_UnitaryExpression,
+        "NotOperator": parse_NotOperator,
         "LogicalAndExpression": parse_LogicalAndExpression,
         "LogicalOrExpression": parse_LogicalOrExpression,
         "primary": parse_primary,
@@ -871,113 +872,245 @@ Splaf.Parser = (function(){
           }
         }
         if (result0 === null) {
-          if (input.charCodeAt(pos) === 62) {
-            result0 = ">";
-            pos++;
+          if (input.substr(pos, 20) === "for maior ou igual a") {
+            result0 = "for maior ou igual a";
+            pos += 20;
           } else {
             result0 = null;
             if (reportFailures === 0) {
-              matchFailed("\">\"");
+              matchFailed("\"for maior ou igual a\"");
             }
           }
           if (result0 === null) {
-            if (input.substr(pos, 2) === "<=") {
-              result0 = "<=";
-              pos += 2;
+            if (input.substr(pos, 18) === "\xE9 maior ou igual a") {
+              result0 = "\xE9 maior ou igual a";
+              pos += 18;
             } else {
               result0 = null;
               if (reportFailures === 0) {
-                matchFailed("\"<=\"");
+                matchFailed("\"\\xE9 maior ou igual a\"");
               }
             }
             if (result0 === null) {
-              if (input.charCodeAt(pos) === 60) {
-                result0 = "<";
+              if (input.charCodeAt(pos) === 62) {
+                result0 = ">";
                 pos++;
               } else {
                 result0 = null;
                 if (reportFailures === 0) {
-                  matchFailed("\"<\"");
+                  matchFailed("\">\"");
                 }
               }
               if (result0 === null) {
-                if (input.substr(pos, 2) === "==") {
-                  result0 = "==";
-                  pos += 2;
+                if (input.substr(pos, 13) === "for maior que") {
+                  result0 = "for maior que";
+                  pos += 13;
                 } else {
                   result0 = null;
                   if (reportFailures === 0) {
-                    matchFailed("\"==\"");
+                    matchFailed("\"for maior que\"");
                   }
                 }
                 if (result0 === null) {
-                  if (input.substr(pos, 7) === "igual a") {
-                    result0 = "igual a";
-                    pos += 7;
+                  if (input.substr(pos, 11) === "\xE9 maior que") {
+                    result0 = "\xE9 maior que";
+                    pos += 11;
                   } else {
                     result0 = null;
                     if (reportFailures === 0) {
-                      matchFailed("\"igual a\"");
+                      matchFailed("\"\\xE9 maior que\"");
                     }
                   }
                   if (result0 === null) {
-                    if (input.substr(pos, 9) === "\xE9 igual a") {
-                      result0 = "\xE9 igual a";
-                      pos += 9;
+                    if (input.substr(pos, 2) === "<=") {
+                      result0 = "<=";
+                      pos += 2;
                     } else {
                       result0 = null;
                       if (reportFailures === 0) {
-                        matchFailed("\"\\xE9 igual a\"");
+                        matchFailed("\"<=\"");
                       }
                     }
                     if (result0 === null) {
-                      if (input.substr(pos, 11) === "for igual a") {
-                        result0 = "for igual a";
-                        pos += 11;
+                      if (input.substr(pos, 20) === "for menor ou igual a") {
+                        result0 = "for menor ou igual a";
+                        pos += 20;
                       } else {
                         result0 = null;
                         if (reportFailures === 0) {
-                          matchFailed("\"for igual a\"");
+                          matchFailed("\"for menor ou igual a\"");
                         }
                       }
                       if (result0 === null) {
-                        if (input.substr(pos, 2) === "!=") {
-                          result0 = "!=";
-                          pos += 2;
+                        if (input.substr(pos, 18) === "\xE9 menor ou igual a") {
+                          result0 = "\xE9 menor ou igual a";
+                          pos += 18;
                         } else {
                           result0 = null;
                           if (reportFailures === 0) {
-                            matchFailed("\"!=\"");
+                            matchFailed("\"\\xE9 menor ou igual a\"");
                           }
                         }
                         if (result0 === null) {
-                          if (input.substr(pos, 12) === "diferente de") {
-                            result0 = "diferente de";
-                            pos += 12;
+                          if (input.charCodeAt(pos) === 60) {
+                            result0 = "<";
+                            pos++;
                           } else {
                             result0 = null;
                             if (reportFailures === 0) {
-                              matchFailed("\"diferente de\"");
+                              matchFailed("\"<\"");
                             }
                           }
                           if (result0 === null) {
-                            if (input.substr(pos, 14) === "\xE9 diferente de") {
-                              result0 = "\xE9 diferente de";
-                              pos += 14;
+                            if (input.substr(pos, 13) === "for menor que") {
+                              result0 = "for menor que";
+                              pos += 13;
                             } else {
                               result0 = null;
                               if (reportFailures === 0) {
-                                matchFailed("\"\\xE9 diferente de\"");
+                                matchFailed("\"for menor que\"");
                               }
                             }
                             if (result0 === null) {
-                              if (input.substr(pos, 16) === "for diferente de") {
-                                result0 = "for diferente de";
-                                pos += 16;
+                              if (input.substr(pos, 11) === "\xE9 menor que") {
+                                result0 = "\xE9 menor que";
+                                pos += 11;
                               } else {
                                 result0 = null;
                                 if (reportFailures === 0) {
-                                  matchFailed("\"for diferente de\"");
+                                  matchFailed("\"\\xE9 menor que\"");
+                                }
+                              }
+                              if (result0 === null) {
+                                if (input.substr(pos, 2) === "==") {
+                                  result0 = "==";
+                                  pos += 2;
+                                } else {
+                                  result0 = null;
+                                  if (reportFailures === 0) {
+                                    matchFailed("\"==\"");
+                                  }
+                                }
+                                if (result0 === null) {
+                                  if (input.substr(pos, 11) === "for igual a") {
+                                    result0 = "for igual a";
+                                    pos += 11;
+                                  } else {
+                                    result0 = null;
+                                    if (reportFailures === 0) {
+                                      matchFailed("\"for igual a\"");
+                                    }
+                                  }
+                                  if (result0 === null) {
+                                    if (input.substr(pos, 9) === "\xE9 igual a") {
+                                      result0 = "\xE9 igual a";
+                                      pos += 9;
+                                    } else {
+                                      result0 = null;
+                                      if (reportFailures === 0) {
+                                        matchFailed("\"\\xE9 igual a\"");
+                                      }
+                                    }
+                                    if (result0 === null) {
+                                      if (input.substr(pos, 7) === "igual a") {
+                                        result0 = "igual a";
+                                        pos += 7;
+                                      } else {
+                                        result0 = null;
+                                        if (reportFailures === 0) {
+                                          matchFailed("\"igual a\"");
+                                        }
+                                      }
+                                      if (result0 === null) {
+                                        if (input.substr(pos, 3) === "for") {
+                                          result0 = "for";
+                                          pos += 3;
+                                        } else {
+                                          result0 = null;
+                                          if (reportFailures === 0) {
+                                            matchFailed("\"for\"");
+                                          }
+                                        }
+                                        if (result0 === null) {
+                                          if (input.charCodeAt(pos) === 233) {
+                                            result0 = "\xE9";
+                                            pos++;
+                                          } else {
+                                            result0 = null;
+                                            if (reportFailures === 0) {
+                                              matchFailed("\"\\xE9\"");
+                                            }
+                                          }
+                                          if (result0 === null) {
+                                            if (input.substr(pos, 2) === "!=") {
+                                              result0 = "!=";
+                                              pos += 2;
+                                            } else {
+                                              result0 = null;
+                                              if (reportFailures === 0) {
+                                                matchFailed("\"!=\"");
+                                              }
+                                            }
+                                            if (result0 === null) {
+                                              if (input.substr(pos, 16) === "for diferente de") {
+                                                result0 = "for diferente de";
+                                                pos += 16;
+                                              } else {
+                                                result0 = null;
+                                                if (reportFailures === 0) {
+                                                  matchFailed("\"for diferente de\"");
+                                                }
+                                              }
+                                              if (result0 === null) {
+                                                if (input.substr(pos, 14) === "\xE9 diferente de") {
+                                                  result0 = "\xE9 diferente de";
+                                                  pos += 14;
+                                                } else {
+                                                  result0 = null;
+                                                  if (reportFailures === 0) {
+                                                    matchFailed("\"\\xE9 diferente de\"");
+                                                  }
+                                                }
+                                                if (result0 === null) {
+                                                  if (input.substr(pos, 12) === "diferente de") {
+                                                    result0 = "diferente de";
+                                                    pos += 12;
+                                                  } else {
+                                                    result0 = null;
+                                                    if (reportFailures === 0) {
+                                                      matchFailed("\"diferente de\"");
+                                                    }
+                                                  }
+                                                  if (result0 === null) {
+                                                    if (input.substr(pos, 7) === "n\xE3o for") {
+                                                      result0 = "n\xE3o for";
+                                                      pos += 7;
+                                                    } else {
+                                                      result0 = null;
+                                                      if (reportFailures === 0) {
+                                                        matchFailed("\"n\\xE3o for\"");
+                                                      }
+                                                    }
+                                                    if (result0 === null) {
+                                                      if (input.substr(pos, 5) === "n\xE3o \xE9") {
+                                                        result0 = "n\xE3o \xE9";
+                                                        pos += 5;
+                                                      } else {
+                                                        result0 = null;
+                                                        if (reportFailures === 0) {
+                                                          matchFailed("\"n\\xE3o \\xE9\"");
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
                                 }
                               }
                             }
@@ -1005,15 +1138,7 @@ Splaf.Parser = (function(){
         reportFailures++;
         pos0 = pos;
         pos1 = pos;
-        if (input.substr(pos, 3) === "n\xE3o") {
-          result0 = "n\xE3o";
-          pos += 3;
-        } else {
-          result0 = null;
-          if (reportFailures === 0) {
-            matchFailed("\"n\\xE3o\"");
-          }
-        }
+        result0 = parse_NotOperator();
         if (result0 === null) {
           if (input.charCodeAt(pos) === 45) {
             result0 = "-";
@@ -1064,6 +1189,48 @@ Splaf.Parser = (function(){
         reportFailures--;
         if (reportFailures === 0 && result0 === null) {
           matchFailed("express\xE3o unit\xE1ria");
+        }
+        return result0;
+      }
+      
+      function parse_NotOperator() {
+        var result0;
+        
+        reportFailures++;
+        if (input.substr(pos, 19) === "n\xE3o for verdade que") {
+          result0 = "n\xE3o for verdade que";
+          pos += 19;
+        } else {
+          result0 = null;
+          if (reportFailures === 0) {
+            matchFailed("\"n\\xE3o for verdade que\"");
+          }
+        }
+        if (result0 === null) {
+          if (input.substr(pos, 17) === "n\xE3o \xE9 verdade que") {
+            result0 = "n\xE3o \xE9 verdade que";
+            pos += 17;
+          } else {
+            result0 = null;
+            if (reportFailures === 0) {
+              matchFailed("\"n\\xE3o \\xE9 verdade que\"");
+            }
+          }
+          if (result0 === null) {
+            if (input.substr(pos, 3) === "n\xE3o") {
+              result0 = "n\xE3o";
+              pos += 3;
+            } else {
+              result0 = null;
+              if (reportFailures === 0) {
+                matchFailed("\"n\\xE3o\"");
+              }
+            }
+          }
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("operador de nega\xE7\xE3o");
         }
         return result0;
       }

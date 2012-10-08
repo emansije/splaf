@@ -36,7 +36,9 @@ Splaf.Interpreter = (function() {
 
     "unaryop": function(node) {
       var arg = EvalNode[node.arg.type](node.arg)
-      if (node.operator === "não") {
+      if (node.operator === "não é verdade que"
+          || node.operator === "não for verdade que"
+          || node.operator === "não") {
         return !arg;
       }
       else if (node.operator === "-") {
@@ -65,28 +67,40 @@ Splaf.Interpreter = (function() {
       else if (node.operator === "%") {
         return left % right
       }
-      else if (node.operator === "<=") {
+      else if (node.operator === "<="
+               || node.operator === "for menor ou igual a"
+               || node.operator === "é menor ou igual a") {
         return left <= right
       }
-      else if (node.operator === ">=") {
+      else if (node.operator === ">="
+               || node.operator === "for maior ou igual a"
+               || node.operator === "é maior ou igual a") {
         return left >= right
       }
-      else if (node.operator === "<") {
+      else if (node.operator === "<"
+               || node.operator === "for menor que"
+               || node.operator === "é menor que") {
         return left < right
       }
-      else if (node.operator === ">") {
+      else if (node.operator === ">"
+               || node.operator === "for maior que"
+               || node.operator === "é maior que") {
         return left > right
       }
-      else if (node.operator === "==" 
-               || node.operator === "igual a"
+      else if (node.operator === "=="
+               || node.operator === "for igual a"
                || node.operator === "é igual a"
-               || node.operator === "for igual a") {
+               || node.operator === "igual a"
+               || node.operator === "for"
+               || node.operator === "é") {
         return left == right
       }
       else if (node.operator === "!="
-               || node.operator === "diferente de"
+               || node.operator === "for diferente de"
                || node.operator === "é diferente de"
-               || node.operator === "for diferente de") {
+               || node.operator === "diferente de"
+               || node.operator === "não for"
+               || node.operator === "não é") {
         return left != right
       }
       else if (node.operator === "e") {
