@@ -31,9 +31,11 @@ reserved "reservado"
   / "começa"
   / "e"
   / "então"
+  / "falso"
   / "não"
   / "ou"
   / "termina"
+  / "verdadeiro"
 
 identifiername "identificador"
   = !reserved
@@ -171,7 +173,7 @@ identifier "identificador"
     }
 
 literal "literal"
-  = val:(real / integer / text) {
+  = val:(real / integer / text / boolean) {
       return {
         type: "literal",
         value: val
@@ -191,6 +193,11 @@ real "real"
 text "texto"
   = '"' str:([^\"]*) '"' {
       return str.join("")
+    }
+
+boolean "booleano"
+  = boolval:("verdadeiro" / "falso") {
+      return boolval == "verdadeiro" ? true : false
     }
 
 parenthesis "parêntesis"

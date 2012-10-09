@@ -63,6 +63,7 @@ Splaf.Parser = (function(){
         "integer": parse_integer,
         "real": parse_real,
         "text": parse_text,
+        "boolean": parse_boolean,
         "parenthesis": parse_parenthesis,
         "block": parse_block,
         "if": parse_if,
@@ -363,33 +364,55 @@ Splaf.Parser = (function(){
                 }
               }
               if (result0 === null) {
-                if (input.substr(pos, 3) === "n\xE3o") {
-                  result0 = "n\xE3o";
-                  pos += 3;
+                if (input.substr(pos, 5) === "falso") {
+                  result0 = "falso";
+                  pos += 5;
                 } else {
                   result0 = null;
                   if (reportFailures === 0) {
-                    matchFailed("\"n\\xE3o\"");
+                    matchFailed("\"falso\"");
                   }
                 }
                 if (result0 === null) {
-                  if (input.substr(pos, 2) === "ou") {
-                    result0 = "ou";
-                    pos += 2;
+                  if (input.substr(pos, 3) === "n\xE3o") {
+                    result0 = "n\xE3o";
+                    pos += 3;
                   } else {
                     result0 = null;
                     if (reportFailures === 0) {
-                      matchFailed("\"ou\"");
+                      matchFailed("\"n\\xE3o\"");
                     }
                   }
                   if (result0 === null) {
-                    if (input.substr(pos, 7) === "termina") {
-                      result0 = "termina";
-                      pos += 7;
+                    if (input.substr(pos, 2) === "ou") {
+                      result0 = "ou";
+                      pos += 2;
                     } else {
                       result0 = null;
                       if (reportFailures === 0) {
-                        matchFailed("\"termina\"");
+                        matchFailed("\"ou\"");
+                      }
+                    }
+                    if (result0 === null) {
+                      if (input.substr(pos, 7) === "termina") {
+                        result0 = "termina";
+                        pos += 7;
+                      } else {
+                        result0 = null;
+                        if (reportFailures === 0) {
+                          matchFailed("\"termina\"");
+                        }
+                      }
+                      if (result0 === null) {
+                        if (input.substr(pos, 10) === "verdadeiro") {
+                          result0 = "verdadeiro";
+                          pos += 10;
+                        } else {
+                          result0 = null;
+                          if (reportFailures === 0) {
+                            matchFailed("\"verdadeiro\"");
+                          }
+                        }
                       }
                     }
                   }
@@ -1553,6 +1576,9 @@ Splaf.Parser = (function(){
           result0 = parse_integer();
           if (result0 === null) {
             result0 = parse_text();
+            if (result0 === null) {
+              result0 = parse_boolean();
+            }
           }
         }
         if (result0 !== null) {
@@ -1743,6 +1769,47 @@ Splaf.Parser = (function(){
         reportFailures--;
         if (reportFailures === 0 && result0 === null) {
           matchFailed("texto");
+        }
+        return result0;
+      }
+      
+      function parse_boolean() {
+        var result0;
+        var pos0;
+        
+        reportFailures++;
+        pos0 = pos;
+        if (input.substr(pos, 10) === "verdadeiro") {
+          result0 = "verdadeiro";
+          pos += 10;
+        } else {
+          result0 = null;
+          if (reportFailures === 0) {
+            matchFailed("\"verdadeiro\"");
+          }
+        }
+        if (result0 === null) {
+          if (input.substr(pos, 5) === "falso") {
+            result0 = "falso";
+            pos += 5;
+          } else {
+            result0 = null;
+            if (reportFailures === 0) {
+              matchFailed("\"falso\"");
+            }
+          }
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, boolval) {
+              return boolval == "verdadeiro" ? true : false
+            })(pos0, result0);
+        }
+        if (result0 === null) {
+          pos = pos0;
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("booleano");
         }
         return result0;
       }
