@@ -6,5 +6,6 @@ Saving to server | id:90cc94f0b58513cf08bba408ec8f70ca4585cdaf
 Implement the if statement in the interpreter | id:9633335540f23eddbf08018bd7dfb5487c16ff9c
 Loading from server | id:9863ee827ab9625d9a0716f03076ee4d3fec613d
 Optimize parser by getting rid of scopes | id:af510b25ed70685884d69869eb4c0ccb7334b2b1
+Add function to calculate square root. | id:c86d8826f4917c7f3b901e91e3841208bc7ca333
 Add alternative functions for I/O ("ler" and "escrever"). | id:e058eb5693c76cf293e91b5a4b0507da1ea62bb1
 Implement interpreter | id:f2d35003e89eaf78ecfd7d0acc6b782cebcd2396

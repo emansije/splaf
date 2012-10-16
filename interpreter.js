@@ -39,10 +39,13 @@ Splaf.Interpreter = (function() {
       if (node.operator === "não é verdade que"
           || node.operator === "não for verdade que"
           || node.operator === "não") {
-        return !arg;
+        return !arg
       }
       else if (node.operator === "-") {
         return -arg
+      }
+      else if (node.operator === "raiz_quadrada") {
+        return Math.sqrt(arg)
       }
     },
 

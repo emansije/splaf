@@ -329,13 +329,24 @@ Splaf.Parser = (function(){
                   }
                 }
                 if (result0 === null) {
-                  if (input.substr(pos, 2) === "se") {
-                    result0 = "se";
-                    pos += 2;
+                  if (input.substr(pos, 13) === "raiz_quadrada") {
+                    result0 = "raiz_quadrada";
+                    pos += 13;
                   } else {
                     result0 = null;
                     if (reportFailures === 0) {
-                      matchFailed("\"se\"");
+                      matchFailed("\"raiz_quadrada\"");
+                    }
+                  }
+                  if (result0 === null) {
+                    if (input.substr(pos, 2) === "se") {
+                      result0 = "se";
+                      pos += 2;
+                    } else {
+                      result0 = null;
+                      if (reportFailures === 0) {
+                        matchFailed("\"se\"");
+                      }
                     }
                   }
                 }
@@ -1192,6 +1203,17 @@ Splaf.Parser = (function(){
             result0 = null;
             if (reportFailures === 0) {
               matchFailed("\"-\"");
+            }
+          }
+          if (result0 === null) {
+            if (input.substr(pos, 13) === "raiz_quadrada") {
+              result0 = "raiz_quadrada";
+              pos += 13;
+            } else {
+              result0 = null;
+              if (reportFailures === 0) {
+                matchFailed("\"raiz_quadrada\"");
+              }
             }
           }
         }

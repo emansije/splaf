@@ -26,6 +26,7 @@ functionname "nome de função"
   / "escrever"
   / "ler"
   / "pede"
+  / "raiz_quadrada"
   / "se"
 
 reserved "reservado"
@@ -121,7 +122,7 @@ ComparisonOperator "operador de comparação"
   / "não é"
 
 UnitaryExpression "expressão unitária"
-  = op:(NotOperator / "-") _ operand:(UnitaryExpression / primary) {
+  = op:(NotOperator / "-" / "raiz_quadrada") _ operand:(UnitaryExpression / primary) {
       return { 
         type: "unaryop", 
         operator: op, 
