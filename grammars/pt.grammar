@@ -23,8 +23,10 @@ attribution "atribuição"
 functionname "nome de função"
   = "diz"
   / "enquanto"
+  / "escreve"
   / "escrever"
   / "ler"
+  / "lê"
   / "pede"
   / "raiz_quadrada"
   / "se"
@@ -239,7 +241,7 @@ while "enquanto"
     }
 
 prompt "pedido"
-  = ("pede" / "ler") ws+ id:identifiername _ lb {
+  = ("pede" / "ler" / "lê") ws+ id:identifiername _ lb {
       return {
         type: "prompt",
         name: id
@@ -247,7 +249,7 @@ prompt "pedido"
     }
 
 print "apresentação"
-  = ("diz" / "escrever") ws+ args:((ws? ComparisonExpression)+)? _ lb {
+  = ("diz" / "escrever" / "escreve") ws+ args:((ws? ComparisonExpression)+)? _ lb {
       return {
         type: "print",
         arguments: args ? args.map(function(a) { return a[1] }) : null

@@ -299,53 +299,75 @@ Splaf.Parser = (function(){
             }
           }
           if (result0 === null) {
-            if (input.substr(pos, 8) === "escrever") {
-              result0 = "escrever";
-              pos += 8;
+            if (input.substr(pos, 7) === "escreve") {
+              result0 = "escreve";
+              pos += 7;
             } else {
               result0 = null;
               if (reportFailures === 0) {
-                matchFailed("\"escrever\"");
+                matchFailed("\"escreve\"");
               }
             }
             if (result0 === null) {
-              if (input.substr(pos, 3) === "ler") {
-                result0 = "ler";
-                pos += 3;
+              if (input.substr(pos, 8) === "escrever") {
+                result0 = "escrever";
+                pos += 8;
               } else {
                 result0 = null;
                 if (reportFailures === 0) {
-                  matchFailed("\"ler\"");
+                  matchFailed("\"escrever\"");
                 }
               }
               if (result0 === null) {
-                if (input.substr(pos, 4) === "pede") {
-                  result0 = "pede";
-                  pos += 4;
+                if (input.substr(pos, 3) === "ler") {
+                  result0 = "ler";
+                  pos += 3;
                 } else {
                   result0 = null;
                   if (reportFailures === 0) {
-                    matchFailed("\"pede\"");
+                    matchFailed("\"ler\"");
                   }
                 }
                 if (result0 === null) {
-                  if (input.substr(pos, 13) === "raiz_quadrada") {
-                    result0 = "raiz_quadrada";
-                    pos += 13;
+                  if (input.substr(pos, 2) === "l\xEA") {
+                    result0 = "l\xEA";
+                    pos += 2;
                   } else {
                     result0 = null;
                     if (reportFailures === 0) {
-                      matchFailed("\"raiz_quadrada\"");
+                      matchFailed("\"l\\xEA\"");
                     }
                   }
                   if (result0 === null) {
-                    if (input.substr(pos, 2) === "se") {
-                      result0 = "se";
-                      pos += 2;
+                    if (input.substr(pos, 4) === "pede") {
+                      result0 = "pede";
+                      pos += 4;
                     } else {
                       result0 = null;
                       if (reportFailures === 0) {
-                        matchFailed("\"se\"");
+                        matchFailed("\"pede\"");
+                      }
+                    }
+                    if (result0 === null) {
+                      if (input.substr(pos, 13) === "raiz_quadrada") {
+                        result0 = "raiz_quadrada";
+                        pos += 13;
+                      } else {
+                        result0 = null;
+                        if (reportFailures === 0) {
+                          matchFailed("\"raiz_quadrada\"");
+                        }
+                      }
+                      if (result0 === null) {
+                        if (input.substr(pos, 2) === "se") {
+                          result0 = "se";
+                          pos += 2;
+                        } else {
+                          result0 = null;
+                          if (reportFailures === 0) {
+                            matchFailed("\"se\"");
+                          }
+                        }
                       }
                     }
                   }
@@ -2329,6 +2351,17 @@ Splaf.Parser = (function(){
               matchFailed("\"ler\"");
             }
           }
+          if (result0 === null) {
+            if (input.substr(pos, 2) === "l\xEA") {
+              result0 = "l\xEA";
+              pos += 2;
+            } else {
+              result0 = null;
+              if (reportFailures === 0) {
+                matchFailed("\"l\\xEA\"");
+              }
+            }
+          }
         }
         if (result0 !== null) {
           result2 = parse_ws();
@@ -2411,6 +2444,17 @@ Splaf.Parser = (function(){
             result0 = null;
             if (reportFailures === 0) {
               matchFailed("\"escrever\"");
+            }
+          }
+          if (result0 === null) {
+            if (input.substr(pos, 7) === "escreve") {
+              result0 = "escreve";
+              pos += 7;
+            } else {
+              result0 = null;
+              if (reportFailures === 0) {
+                matchFailed("\"escreve\"");
+              }
             }
           }
         }
