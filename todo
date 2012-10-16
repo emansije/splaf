@@ -5,4 +5,5 @@ Flowchart editing infrastructure | id:4fd44559f6ef158c5652620ef58259427335578a
 Structured language automatic writing from the flowchart editing actions | id:70c70f55ad67c1d3b305d21c30da459b18fa509a
 Add arrows to connection lines | id:a21b2d395b3a9f155805347576f4974559618312
 Use indentation to define blocks of statements. | id:c6e1342a5193a60399f945977b5482e30f14bba4
+Add function to calculate square root. | id:c86d8826f4917c7f3b901e91e3841208bc7ca333
 jQuerify the saveFile function in splaf.js | id:f0ae11338c032544edcfa32768321498262c7328

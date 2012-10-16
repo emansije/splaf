@@ -1,2 +1,3 @@
 Graphical representation of unary operators is missing. | id:7e2b02d1b93b0ed875f9123b6017dd893c497c72
+Values like 1.02 are transformed into 1.2 (zeroes between the decimal point and the rest of the digits to the right are removed). | id:a3ec71c347f725d3e23f0ba6d915e3588fc7e6a4
 Manual input and terminal output are both wrongly represented as I/O | id:cce960fd58f8dfaad165942bc8ecb416c0bfdd9c
